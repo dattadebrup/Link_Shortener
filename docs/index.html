@@ -50,7 +50,7 @@
 function shorten_link()
 {  
   var link =document.getElementById("link").value;  
-  var url = 'http://localhost:7071/api/shorten?url=' ;
+  var url = 'https://linkshorten.azurewebsites.net/api/shorten?code=CEmWOtNZ0tFx4Sks0vbvlgkwHj0WfPTZoOPQZxrV8o65mm8idB/Yrg==&url=' ;
   var res = url.concat(link);
   fetch(res)
   .then(
