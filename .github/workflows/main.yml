@@ -1,0 +1,11 @@
+- name: Azure Functions Action
+  uses: Azure/functions-action@v1.1.4
+  with:
+    # Name of the Azure Function App
+    app-name: 
+    # Path to package or folder. *.zip or a folder to deploy
+    package: # optional, default is .
+    # Function app slot to be deploy to
+    slot-name: # optional
+    # Publish profile (*.publishsettings) file contents with web deploy secrets
+    publish-profile: # optional
