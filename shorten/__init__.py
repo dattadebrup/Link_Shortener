@@ -6,9 +6,11 @@ import random
 import string
 import requests
 import time
+import os 
 
-f = open("shorten/git_token.txt", "r")
-token = str(f.read())
+#f = open("shorten/git_token.txt", "r")
+#token = str(f.read())
+token = os.environ["token"]
 g = Github(token)
 repo = g.get_repo("dattadebrup/link")
 headers = {"Access-Control-Allow-Origin": "*"}
