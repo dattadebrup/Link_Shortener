@@ -33,7 +33,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         ran_string= get_random_alphaNumeric_string()
         #content = '<head> <meta http-equiv="refresh" content="0; URL='+url+'" /> </head> <body> <p>If you are not redirected, <a href="'+url+'">click here</a>.</p> </body>'
         content = url 
-        repo.create_file("/sites/"+ran_string + ".txt" , "New link added", content, branch="master")
+        repo.create_file("sites/"+ran_string + ".txt" , "New link added", content, branch="master")
 
         myobj = {'url': 'https://dattadebrup.github.io/Link_Shortener/shorten.html?li=' + ran_string}
         short_link = "https://git.io/" + requests.post('https://git.io/create', data = myobj).text 

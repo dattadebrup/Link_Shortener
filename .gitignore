@@ -43,3 +43,5 @@ __pycache__/
 *$py.class
 .vscode/
 azure-functions-core-tools/
+
+shorten/git_token.txt
