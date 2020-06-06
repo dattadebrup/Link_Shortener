@@ -1,1 +1,3 @@
 azure-functions
+PyGithub=1.51
+requests

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<body onload="myFunction()">
+
+<h3>Wait while you are being redirected.</h3>
+
+<script>
+
+function makeid(length) {
+   var result           = '';
+   var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+   var charactersLength = characters.length;
+   for ( var i = 0; i < length; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+   }
+   return result;
+}
+function myFunction() {
+  var url_to_load = window.location.href + makeid(1) ; 
+  window.open(url_to_load, "_top");
+}
+</script>
+
+</body>
+</html>

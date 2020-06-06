@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 140px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  bottom: 150%;
+  left: 50%;
+  margin-left: -75px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+</style>
+</head>
+
+<body>
+
+<script type="text/javascript">  
+function shorten_link()
+{  
+  var link =document.getElementById("link").value;  
+  var url = 'http://localhost:7071/api/shorten?url=' ;
+  var res = url.concat(link);
+  fetch(res)
+  .then(
+    function(response) {
+      if (response.status !== 200) 
+      {
+        console.log('Looks like there was a problem. Status Code: ' +
+          response.status);
+        return;
+      }
+
+      // Examine the text in the response
+      response.text().then(function(data) {
+        console.log(data);
+        document.getElementById('short_link').value = data;
+      });
+    }
+  )
+  .catch(function(err) {
+    console.log('Fetch Error :-S', err);
+  });  
+}
+
+function copy_text() {
+  var copyText = document.getElementById("short_link");
+  copyText.select();
+  copyText.setSelectionRange(0, 99999);
+  document.execCommand("copy");
+  
+  var tooltip = document.getElementById("myTooltip");
+  tooltip.innerHTML = "Copied: " + copyText.value;
+}  
+function outFunc() {
+  var tooltip = document.getElementById("myTooltip");
+  tooltip.innerHTML = "Copy to clipboard";
+}
+</script>  
+
+<form>
+  <label for="link">Enter Link: </label><br>
+  <input type="text" id="link" name="link" value=""><br>
+  <input type="button" value="Shorten it!" onclick="shorten_link()" value= "Shorten it!">
+</form>
+<br/> The shortened link: -- 
+<input type="text" name="short_link" id="short_link" readonly="true" />
+<div class="tooltip">
+<button onclick="copy_text()" onmouseout="outFunc()">
+  <span class="tooltiptext" id="myTooltip">Copy to clipboard</span>
+  Copy text
+  </button>
+</div>
+</body>
+</html>

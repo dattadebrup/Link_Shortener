@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<script type="text/javascript">
+var queryString = window.location.search;
+var urlParams = new URLSearchParams(queryString);
+var link = urlParams.get('li');
+var res = 'https://raw.githubusercontent.com/dattadebrup/link/master/sites/'+link+'.txt';
+fetch(res)
+  .then(
+    function(response) {
+      if (response.status !== 200) 
+      {
+        console.log('Looks like there was a problem. Status Code: ' +
+          response.status);
+        return;
+      }
+
+      // Examine the text in the response
+      response.text().then(function(data) {
+        //console.log(data);
+       //window.document.write(data);
+        //window.open(res, "_top");
+        document.write('<p>If you are not redirected, <a href="'+data+'">click here</a>.</p>');
+        window.location = data;
+      });
+    }
+  )
+  .catch(function(err) {
+    console.log('Fetch Error :-S', err);
+  });  
+
+
+// document.write('<head> <meta http-equiv="refresh" content="0; URL=https://www.w3schools.com/python/ref_requests_post.asp" /> </head> <body> <p>If you are not redirected, <a href="https://www.w3schools.com/python/ref_requests_post.asp">click here</a>.</p> </body>');
+</script>
+
+</body>
+</html>
