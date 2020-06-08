@@ -36,6 +36,7 @@ def is_valid_token(site_token):
     obj_recaptcha = {'secret': server_token,'response' : site_token}
     resp = requests.post('https://www.google.com/recaptcha/api/siteverify', data = obj_recaptcha)
     data = resp.json()
+    logging.info(data["success"])
     if data["success"] == 'true':
         return True
     if data["success"] == 'false':
