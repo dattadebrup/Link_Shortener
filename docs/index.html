@@ -71,6 +71,7 @@ function shorten_link(token)
         { 
           console.log(data);
           document.getElementById('short_link').value = data;
+          grecaptcha.reset();
         });
         return;
       }
