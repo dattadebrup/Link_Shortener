@@ -56,19 +56,24 @@ function shorten_link(token)
   res = res + '&token=' + token ; 
   fetch(res)
   .then(
-    function(response) {
+    function(response) 
+    {
       if (response.status !== 200) 
       {
         console.log('Looks like there was a problem. Status Code: ' +
           response.status);
         return;
       }
-
-      // Examine the text in the response
-      response.text().then(function(data) {
-        console.log(data);
-        document.getElementById('short_link').value = data;
-      });
+      else
+      {
+        // Examine the text in the response
+        response.text().then(function(data) 
+        { 
+          console.log(data);
+          document.getElementById('short_link').value = data;
+        });
+        return;
+      }
     }
   )
   .catch(function(err) {
