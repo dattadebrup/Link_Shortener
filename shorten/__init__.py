@@ -7,31 +7,49 @@ import string
 import requests
 import time
 import os 
+import re
 
 #f = open("shorten/git_token.txt", "r")
 #token = str(f.read())
-token = os.environ["token"]
-g = Github(token)
+git_token = os.environ["token"]
+g = Github(git_token)
 repo = g.get_repo("dattadebrup/link")
 headers = {"Access-Control-Allow-Origin": "*"}
+server_token = os.environ["recaptcha_token"]
 
 def get_random_alphaNumeric_string(stringLength=5):
     lettersAndDigits = string.ascii_letters + string.digits
     return ''.join((random.choice(lettersAndDigits) for i in range(stringLength)))
 
+def is_url(url):
+    regex = re.compile(
+        r'^(?:http|ftp)s?://' # http:// or https://
+        r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|' #domain...
+        r'localhost|' #localhost...
+        r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})' # ...or ip
+        r'(?::\d+)?' # optional port
+        r'(?:/?|[/?]\S+)$', re.IGNORECASE)
+    return (re.match(regex, url))
+
+def is_valid_token(site_token):
+
+    obj_recaptcha = {'secret': server_token,'response' : site_token}
+    resp = requests.post('https://www.google.com/recaptcha/api/siteverify', data = obj_recaptcha)
+    data = resp.json()
+    if data["success"] == 'true':
+        return True
+    if data["success"] == 'false':
+        return False
+
 def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
     
     url = req.params.get('url')
-    if not url:
-        try:
-            req_body = req.get_json()
-        except ValueError:
-            pass
-        else:
-            url = req_body.get('url')
+    site_token = req.params.get('token')
+    is_url_current = is_url(url)
+    is_valid_token_current = is_valid_token(site_token)
 
-    if url:
+    if is_url_current and is_valid_token_current:
         ran_string= get_random_alphaNumeric_string()
         #content = '<head> <meta http-equiv="refresh" content="0; URL='+url+'" /> </head> <body> <p>If you are not redirected, <a href="'+url+'">click here</a>.</p> </body>'
         content = url 
@@ -39,10 +57,17 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
         myobj = {'url': 'https://dattadebrup.github.io/Link_Shortener/shorten.html?li=' + ran_string}
         short_link = "https://git.io/" + requests.post('https://git.io/create', data = myobj).text 
-        #time.sleep(0)
+        
         return func.HttpResponse(short_link, headers = headers)
+
+    elif is_url_current and not is_valid_token_current:
+        return func.HttpResponse("Recaptcha verification failed", headers = headers)
+
+    elif not is_url_current and is_valid_token_current:
+        return func.HttpResponse("Not a valid url", headers = headers)
     else:
         return func.HttpResponse(
-             "Please pass a url on the query string or in the request body",
-             status_code=400, headers = headers
+             "Error",
+             #status_code=400, 
+             headers = headers
         )

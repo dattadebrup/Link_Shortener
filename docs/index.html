@@ -46,12 +46,14 @@
 
 <body>
 
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 <script type="text/javascript">  
-function shorten_link()
+function shorten_link(token)
 {  
   var link =document.getElementById("link").value;  
   var url = 'https://linkshorten.azurewebsites.net/api/shorten?code=CEmWOtNZ0tFx4Sks0vbvlgkwHj0WfPTZoOPQZxrV8o65mm8idB/Yrg==&url=' ;
   var res = url.concat(link);
+  res = res + '&token=' + token ; 
   fetch(res)
   .then(
     function(response) {
@@ -92,7 +94,7 @@ function outFunc() {
 <form>
   <label for="link">Enter Link: </label><br>
   <input type="text" id="link" name="link" value=""><br>
-  <input type="button" value="Shorten it!" onclick="shorten_link()" value= "Shorten it!">
+  <input class="g-recaptcha" data-sitekey='6LciLwEVAAAAABAteHIh6IIbxL7HCWfasOB_K-wv' type="button" value="Shorten it!" data-callback='shorten_link'>
 </form>
 <br/> The shortened link: -- 
 <input type="text" name="short_link" id="short_link" readonly="true" />
