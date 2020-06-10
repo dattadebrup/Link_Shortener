@@ -47,13 +47,12 @@
     right: 0;
     display: none;
   }
+.grecaptcha-badge { visibility: hidden; }
 </style>
 </head>
 
 <body>
-<div class="bottomright">
-<script src="https://www.google.com/recaptcha/api.js" async defer></script>
-</div>
+<script class = "grecaptcha-badge" src="https://www.google.com/recaptcha/api.js" async defer></script>
 <script type="text/javascript">  
 function shorten_link(token)
 {  
