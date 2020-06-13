@@ -57,9 +57,9 @@
 function shorten_link(token)
 {  
   var link =document.getElementById("link").value;  
-  var url = 'https://linkshorten.azurewebsites.net/api/shorten?code=CEmWOtNZ0tFx4Sks0vbvlgkwHj0WfPTZoOPQZxrV8o65mm8idB/Yrg==&url=' ;
-  var res = url.concat(link);
-  res = res + '&token=' + token ; 
+  var url = 'https://linkshorten.azurewebsites.net/api/shorten?code=CEmWOtNZ0tFx4Sks0vbvlgkwHj0WfPTZoOPQZxrV8o65mm8idB/Yrg==' ;
+  res = url + '&token=' + token ; 
+  res = res + '&url=' + link ; 
   fetch(res)
   .then(
     function(response) 
