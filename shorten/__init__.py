@@ -22,9 +22,7 @@ def get_random_alphaNumeric_string(stringLength=5):
     return ''.join((random.choice(lettersAndDigits) for i in range(stringLength)))
 
 def is_url(url):
-    if ((url[0:3] != 'htt') and (url[0:3] !='ftp')) :
-        url = 'http://' + url
-
+    
     regex = re.compile(
         r'^(?:http|ftp)s?://' # http:// or https://
         r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|' #domain...
@@ -47,6 +45,8 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     
     url = req.params.get('url')
     site_token = req.params.get('token')
+    if ((url[0:3] != 'htt') and (url[0:3] !='ftp')) :
+        url = 'http://' + url
     is_url_current = is_url(url)
     is_valid_token_current = is_valid_token(site_token)
 
